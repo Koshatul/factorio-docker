@@ -3,7 +3,6 @@ FROM alpine:3.6
 LABEL maintainer="koshatul@gmail.com" \
   au.com.czero.vendor="Control Zero" \
   au.com.czero.project="Factorio Server" \
-  version="experimental" \
   description="Factorio Server Docker Container"
 
 ENV GLIBC_VERSION 2.25-r0
@@ -28,7 +27,7 @@ VOLUME ["/saves", "/config"]
 
 ENV SAVE /saves/server.zip
 ENV HOME /factorio
-ENV VERSION 0.15.21
+ENV VERSION 0.15.0
 
 RUN curl -s https://www.factorio.com/download-headless/experimental | grep -o "/get-download/.*/headless/linux64" | grep "${VERSION}" | awk '{print "-L -s -o /tmp/factorio.tar.gz https://www.factorio.com"$1}' | xargs curl \
   && tar xf /tmp/factorio.tar.gz --strip-components=1 -C /factorio \
