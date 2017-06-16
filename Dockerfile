@@ -8,7 +8,7 @@ LABEL maintainer="koshatul@gmail.com" \
 
 RUN apt update \
   && apt dist-upgrade -y \
-  && apt install -y curl xz-utils binutils \
+  && apt install -y curl xz-utils \
   && apt autoremove -y \
   && rm -rf /var/lib/apt/lists/*
 

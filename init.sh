@@ -13,6 +13,5 @@ fi
 if [[ ! -z ${1} ]]; then
 	${HOME}/bin/x64/factorio "${@}"
 else
-	${HOME}/bin/x64/factorio --server-settings "/config/server-settings.json" --generate-map-preview "${SAVE}.png" "${SAVE}"
 	${HOME}/bin/x64/factorio --server-settings "/config/server-settings.json" --start-server "${SAVE}"
 fi
