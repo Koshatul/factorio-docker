@@ -68,7 +68,6 @@ for STABLE_VERSION in ${STABLE_VERSIONS[*]}; do
 		STABLE_TAG="${VERSION}"
 	fi
 	docker_build_factorio "${VERSION}" "https://www.factorio.com/download-headless/stable"
-	exit 0
 done
 
 echo "INFO Stable Tag: ${STABLE_TAG}"
