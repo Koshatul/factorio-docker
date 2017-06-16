@@ -49,27 +49,26 @@ for EXPERIMENTAL_VERSION in ${EXPERIMENTAL_VERSIONS[*]}; do
 	echo "INFO Experimental Version: ${EXPERIMENTAL_VERSION}"
 	VERSION="$(echo "${EXPERIMENTAL_VERSION}" | sed -e 's_.*get-download/__;s_/headless.*__')"
 	echo "INFO Version: ${VERSION}"
+	docker_build_factorio "${VERSION}" "https://www.factorio.com/download-headless/experimental"
 	if [[ -z ${EXPERIMENTAL_TAG} ]]; then
 		EXPERIMENTAL_TAG="${VERSION}"
+		echo "INFO Experimental Tag: ${EXPERIMENTAL_TAG}"
+		docker tag "${DOCKER_IMAGE}:${EXPERIMENTAL_TAG}" "${DOCKER_IMAGE}:experimental"
+		docker push "${DOCKER_IMAGE}:experimental"
 	fi
-	docker_build_factorio "${VERSION}" "https://www.factorio.com/download-headless/experimental"
 done
 
-echo "INFO Experimental Tag: ${EXPERIMENTAL_TAG}"
-docker tag "${DOCKER_IMAGE}:${EXPERIMENTAL_TAG}" "${DOCKER_IMAGE}:experimental"
-docker push "${DOCKER_IMAGE}:experimental"
 
 STABLE_VERSIONS=($(curl -s https://www.factorio.com/download-headless/stable | grep -o "/get-download/.*/headless/linux64"))
 for STABLE_VERSION in ${STABLE_VERSIONS[*]}; do
 	echo "INFO Stable Version: ${STABLE_VERSION}"
 	VERSION="$(echo "${STABLE_VERSION}" | sed -e 's_.*get-download/__;s_/headless.*__')"
 	echo "INFO Version: ${VERSION}"
+	docker_build_factorio "${VERSION}" "https://www.factorio.com/download-headless/stable"
 	if [[ -z ${STABLE_TAG} ]]; then
 		STABLE_TAG="${VERSION}"
+		echo "INFO Stable Tag: ${STABLE_TAG}"
+		docker tag "${DOCKER_IMAGE}:${STABLE_TAG}" "${DOCKER_IMAGE}:stable"
+		docker push "${DOCKER_IMAGE}:stable"
 	fi
-	docker_build_factorio "${VERSION}" "https://www.factorio.com/download-headless/stable"
 done
-
-echo "INFO Stable Tag: ${STABLE_TAG}"
-docker tag "${DOCKER_IMAGE}:${STABLE_TAG}" "${DOCKER_IMAGE}:stable"
-docker push "${DOCKER_IMAGE}:stable"

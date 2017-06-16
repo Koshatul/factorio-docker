@@ -13,6 +13,7 @@ As simple as:
 $ docker run -dt koshatul/factorio:stable
 ```
 
+
 # Persisting the map
 
 To persist the map, just specify a volume mount for the /saves directory:
@@ -22,17 +23,20 @@ $ mkdir saves
 $ docker run -dt -v "$PWD/saves":/saves koshatul/factorio:stable
 ```
 
+
 # Playing in experimental (where all the fun is)
 
 ```console
 $ docker run -dt -v "$PWD/saves":/saves koshatul/factorio:experimental
 ```
 
+
 # Specifying a server-settings file (volume mount for the /config/server-settings.json file or /config/ directory)
 
 ```console
 $ docker run -dt -v "$PWD/saves":/saves -v "$PWD/server-settings.json":/config/server-settings.json koshatul/factorio:experimental
 ```
+
 
 # License
 
