@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/ash
 
 if [[ ! -f "${SAVE}" ]]; then
 	${HOME}/bin/x64/factorio --create "${SAVE}"
