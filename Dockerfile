@@ -8,7 +8,7 @@ LABEL maintainer="koshatul@gmail.com" \
 
 RUN apt update \
   && apt dist-upgrade -y \
-  && apt install -y curl xz-utils \
+  && apt install -y curl xz-utils binutils \
   && apt autoremove -y \
   && rm -rf /var/lib/apt/lists/*
 
@@ -19,6 +19,7 @@ RUN mkdir -p /factorio /saves /config \
 USER factorio
 
 WORKDIR /factorio
+VOLUME ["/saves", "/config"]
 
 ENV SAVE /saves/server.zip
 ENV HOME /factorio
