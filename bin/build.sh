@@ -54,7 +54,7 @@ function docker_build_factorio() {
 }
 
 ## Experimental Builds
-EXPERIMENTAL_VERSIONS=($(curl -s https://www.factorio.com/download-headless/experimental | grep -o "/get-download/.*/headless/linux64" | tail -r))
+EXPERIMENTAL_VERSIONS=($(curl -s https://www.factorio.com/download-headless/experimental | grep -o "/get-download/.*/headless/linux64" | ${BIN_REVERSE_ORDER}))
 for EXPERIMENTAL_VERSION in ${EXPERIMENTAL_VERSIONS[*]}; do
 	echo "INFO Experimental Version: ${EXPERIMENTAL_VERSION}"
 	VERSION="$(echo "${EXPERIMENTAL_VERSION}" | sed -e 's_.*get-download/__;s_/headless.*__')"
@@ -71,7 +71,7 @@ fi
 
 
 BUILD_DONE="0"
-STABLE_VERSIONS=($(curl -s https://www.factorio.com/download-headless/stable | grep -o "/get-download/.*/headless/linux64" | tail -r))
+STABLE_VERSIONS=($(curl -s https://www.factorio.com/download-headless/stable | grep -o "/get-download/.*/headless/linux64" | ${BIN_REVERSE_ORDER}))
 for STABLE_VERSION in ${STABLE_VERSIONS[*]}; do
 	echo "INFO Stable Version: ${STABLE_VERSION}"
 	VERSION="$(echo "${STABLE_VERSION}" | sed -e 's_.*get-download/__;s_/headless.*__')"
