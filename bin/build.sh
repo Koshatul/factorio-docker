@@ -9,6 +9,10 @@ DOCKER_IMAGE="koshatul/factorio"
 BASE_DIR="$(cd $(dirname ${0})/..; pwd)"
 echo "INFO Base Directory: ${BASE_DIR}"
 BUILD_DONE="0"
+BIN_REVERSE_ORDER="tail -r"
+if [[ "$(which tac)" != "" ]]; then
+	BIN_REVERSE_ORDER="$(which tac)"
+fi
 
 function docker_tag_exists() {
 	curl --silent -f -lSL https://index.docker.io/v1/repositories/$1/tags/$2 > /dev/null
