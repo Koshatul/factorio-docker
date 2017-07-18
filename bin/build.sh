@@ -8,6 +8,7 @@ DOCKER_IMAGE="koshatul/factorio"
 
 BASE_DIR="$(cd $(dirname ${0})/..; pwd)"
 echo "INFO Base Directory: ${BASE_DIR}"
+BUILD_DONE="0"
 
 function docker_tag_exists() {
 	curl --silent -f -lSL https://index.docker.io/v1/repositories/$1/tags/$2 > /dev/null
@@ -16,6 +17,11 @@ function docker_tag_exists() {
 function docker_build_factorio() {
 	VERSION="${1}"
 	RELEASE_URL="${2}"
+	if docker_tag_exists "${DOCKER_IMAGE}" "${VERSION}"; then
+		echo "INFO Skipping, already on Docker Hub"
+		return;
+	fi
+	BUILD_DONE="1"
 	BUILD_DIR="$(mktemp -d)"
 	echo "INFO Build Directory: ${BUILD_DIR}"
 	cp ${BASE_DIR}/Dockerfile ${BUILD_DIR}/Dockerfile
@@ -52,10 +58,15 @@ for EXPERIMENTAL_VERSION in ${EXPERIMENTAL_VERSIONS[*]}; do
 	docker_build_factorio "${VERSION}" "https://www.factorio.com/download-headless/experimental"
 done
 echo "INFO Experimental Tag: ${VERSION}"
-docker tag "${DOCKER_IMAGE}:${VERSION}" "${DOCKER_IMAGE}:experimental"
-docker push "${DOCKER_IMAGE}:experimental"
+if [[ ${BUILD_DONE} == "0" ]]; then
+	echo "INFO No builds run, skipping experimental tag"
+else
+	docker tag "${DOCKER_IMAGE}:${VERSION}" "${DOCKER_IMAGE}:experimental"
+	docker push "${DOCKER_IMAGE}:experimental"
+fi
 
 
+BUILD_DONE="0"
 STABLE_VERSIONS=($(curl -s https://www.factorio.com/download-headless/stable | grep -o "/get-download/.*/headless/linux64" | tail -r))
 for STABLE_VERSION in ${STABLE_VERSIONS[*]}; do
 	echo "INFO Stable Version: ${STABLE_VERSION}"
@@ -64,5 +75,9 @@ for STABLE_VERSION in ${STABLE_VERSIONS[*]}; do
 	docker_build_factorio "${VERSION}" "https://www.factorio.com/download-headless/stable"
 done
 echo "INFO Stable Tag: ${VERSION}"
-docker tag "${DOCKER_IMAGE}:${VERSION}" "${DOCKER_IMAGE}:stable"
-docker push "${DOCKER_IMAGE}:stable"
+if [[ ${BUILD_DONE} == "0" ]]; then
+	echo "INFO No builds run, skipping stable tag"
+else
+	docker tag "${DOCKER_IMAGE}:${VERSION}" "${DOCKER_IMAGE}:stable"
+	docker push "${DOCKER_IMAGE}:stable"
+fi
