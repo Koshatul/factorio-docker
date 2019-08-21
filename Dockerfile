@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.10
 
 LABEL maintainer="koshatul@gmail.com" \
   au.com.czero.vendor="Control Zero" \
